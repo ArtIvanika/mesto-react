@@ -35,7 +35,7 @@ export default function Main(props) {
               className="profile__foto-btn"
               type="button"
               onClick={props.onEditAvatar}
-            ></button>
+              />
           </div>
           <div className="profile__text">
             <div className="profile__text-first">
@@ -44,7 +44,7 @@ export default function Main(props) {
                 className="profile__edit-button"
                 type="button"
                 onClick={props.onEditProfile}
-              ></button>
+              />
             </div>
             <p className="profile__text-subtitle">{userDescription}</p>
           </div>
@@ -53,7 +53,7 @@ export default function Main(props) {
           className="button-add"
           type="button"
           onClick={props.onAddPlace}
-        ></button>
+          />
       </section>
 
       <section className="card">
