@@ -9,6 +9,7 @@ function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
+  const [isDeleteCardPopupOpen, setIsDeleteCardPopupOpen] = useState(false)
   const [selectedCard, setSelectedCard] = useState({
     isOpen: false,
     item: {}
@@ -23,12 +24,16 @@ console.log(selectedCard)
   function handleAddPlaceClick() {
     setIsAddPlacePopupOpen(true);
   }
+  function handleDeleteCardClick() {
+    setIsDeleteCardPopupOpen(true);
+  }
 
   // закрытие всех попапов
   function closeAllPopups() {
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
+    setIsDeleteCardPopupOpen(false)
     setSelectedCard({
         isOpen: false,
         item: {}
@@ -44,6 +49,7 @@ console.log(selectedCard)
           onEditAvatar={handleEditAvatarClick}
           onAddPlace={handleAddPlaceClick}
           onCardClick={setSelectedCard}
+          onCardDelete={handleDeleteCardClick}
         />
         <Footer />
         <PopupWithForm
@@ -141,6 +147,13 @@ console.log(selectedCard)
             </span>
           </div>
         </PopupWithForm>
+        <PopupWithForm 
+          name="delete" 
+          title="Вы уверены?"
+          isOpen={isDeleteCardPopupOpen}
+          onClose={closeAllPopups}
+          btnText="Да"
+          />
         <ImagePopup card={selectedCard} onClose={closeAllPopups} />
       </body>
     </div>

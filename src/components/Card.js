@@ -1,7 +1,7 @@
 import React from "react"
 
 
-function Card({card, onCardClick}){
+function Card({card, onCardClick, onCardDelete}){
 
     const handleCardClick =() => {
        onCardClick({
@@ -11,7 +11,7 @@ function Card({card, onCardClick}){
      
     return(
           <li className="card__item">
-            <button className="card__delete" type="button"></button>
+            <button className="card__delete" type="button" onClick={onCardDelete}></button>
             <img className="card__foto" onClick={handleCardClick} src={card.link} alt={card.name} />
             <div className="card__text">
               <h2 className="card__title">{card.name}</h2>
