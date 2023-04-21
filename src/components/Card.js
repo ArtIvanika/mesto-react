@@ -6,7 +6,8 @@ function Card({card, onCardClick, onCardDelete}){
     const handleCardClick =() => {
        onCardClick({
             isOpen: true,
-            item: card});    
+            item: card
+          });    
       }  
      
     return(
