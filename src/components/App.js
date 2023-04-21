@@ -42,7 +42,7 @@ console.log(selectedCard)
 
   return (
     <div className="App">
-      <body class="page">
+      <body className="page">
         <Header />
         <Main
           onEditProfile={handleEditProfileClick}

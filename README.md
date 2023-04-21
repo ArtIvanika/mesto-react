@@ -14,7 +14,7 @@
 
 **Проект**
 
-* [Ссылка на проект](https://artivanika.github.io/mesto/)
+* [Ссылка на проект](https://artivanika.github.io/mesto-react/)
 
 **Используемые технологии**
 
