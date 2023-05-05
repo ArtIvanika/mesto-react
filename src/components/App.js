@@ -11,8 +11,10 @@ import React from "react";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 function App() {
-  const [currentUser, setCurrentUser] = React.useState("");
+  const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
+  const [isLoading, setIsLoading] = React.useState(false);
+
 
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] =
     React.useState(false);
@@ -50,6 +52,10 @@ function App() {
     setIsDeleteCardPopupOpen(true);
   }
 
+  // function handleIsLoading(){
+
+  // }
+
   // закрытие всех попапов
   function closeAllPopups() {
     setIsEditProfilePopupOpen(false);
@@ -61,6 +67,28 @@ function App() {
       item: {},
     });
   }
+
+  const isOpen =
+    isEditAvatarPopupOpen ||
+    isEditProfilePopupOpen ||
+    isAddPlacePopupOpen ||
+    selectedCard.isOpen;
+
+//закрытие по "Escape"
+  React.useEffect(() => {
+    function closeByEscape(evt) {
+      if (evt.key === "Escape") {
+        closeAllPopups();
+      }
+    }
+    if (isOpen) {
+      // навешиваем только при открытии
+      document.addEventListener("keydown", closeByEscape);
+      return () => {
+        document.removeEventListener("keydown", closeByEscape);
+      };
+    }
+  }, [isOpen]);
 
   function handleCardLike(card) {
     // Снова проверяем, есть ли уже лайк на этой карточке
@@ -88,52 +116,59 @@ function App() {
     }
   }
 
-  function handleCardDelete(card){
-    api.deleteCard(card._id)
-    .then((newCard) => {
-      const newCards = cards.filter((c) =>
-        c._id === card._id ? "" : newCard
-      );
-      setCards(newCards);
-    })
-    .catch((err) => console.log(err));
+  function handleCardDelete(card) {
+    api
+      .deleteCard(card._id)
+      .then((newCard) => {
+        const newCards = cards.filter((c) =>
+          c._id === card._id ? "" : newCard
+        );
+        setCards((state) => state.filter((item) => item._id !== card._id));
+        //setCards(newCards);
+      })
+      .catch((err) => console.log(err));
   }
-  
 
   function handleUpdateUser(name, about) {
+    setIsLoading(true)
     api
       .editUserInfo(name, about)
       .then(({ name, about, avatar, _id }) => {
         setCurrentUser({ name, about, avatar, id: _id });
         closeAllPopups();
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err))
+      .finally(() => {setIsLoading(false)})
   }
 
   function handleUpdateAvatar(avatar) {
+    setIsLoading(true)
     api
       .editUserAvatar(avatar)
       .then(({ name, about, avatar, _id }) => {
         setCurrentUser({ name, about, avatar, id: _id });
         closeAllPopups();
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err))
+      .finally(() => {setIsLoading(false)})
   }
 
   function handleAddPlaceSubmit(name, link) {
+    setIsLoading(true)
     api
       .addNewCard(name, link)
       .then((newCard) => {
         setCards([newCard, ...cards]);
         closeAllPopups();
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err))
+      .finally(() => {setIsLoading(false)})
   }
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="App">
-        <body className="page">
+        <div className="page">
           <Header />
           <Main
             onEditProfile={handleEditProfileClick}
@@ -150,16 +185,19 @@ function App() {
             isOpen={isEditProfilePopupOpen}
             onClose={closeAllPopups}
             onUpdateUser={handleUpdateUser}
+            isLoading={isLoading}
           />
           <EditAvatarPopup
             isOpen={isEditAvatarPopupOpen}
             onClose={closeAllPopups}
             onUpdateAvatar={handleUpdateAvatar}
+            isLoading={isLoading}
           />
           <AddPlacePopup
             isOpen={isAddPlacePopupOpen}
             onClose={closeAllPopups}
             onAddPlace={handleAddPlaceSubmit}
+            isLoading={isLoading}
           />
           <PopupWithForm
             name="delete"
@@ -169,7 +207,7 @@ function App() {
             btnText="Да"
           />
           <ImagePopup card={selectedCard} onClose={closeAllPopups} />
-        </body>
+        </div>
       </div>
     </CurrentUserContext.Provider>
   );

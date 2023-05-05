@@ -37,7 +37,7 @@ function AddPlacePopup(props) {
       isOpen={props.isOpen}
       onClose={props.onClose}
       onSubmit={handleSubmit}
-      btnText="Создать"
+      btnText={props.isLoading? 'Сохранение...' : 'Создать'}
     >
       <div className="popup__input">
         <input
@@ -48,8 +48,8 @@ function AddPlacePopup(props) {
           name="name"
           placeholder="Название"
           className="popup__info popup__info_input_card-name"
-          minlength="2"
-          maxlength="30"
+          minLength="2"
+          maxLength="30"
           required=""
         />
         <span className="card-name-input-error popup__info-error">
