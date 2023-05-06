@@ -11,24 +11,24 @@
     return Promise.reject(`Ошибка: ${res.status}`);
   }
 
-  // //попробовать как работает
-  // _request(url, options) {
-  //   return fetch(url, options).then(this._checkStatusRequest)
-  // }
-
-  // getUserInfo() {
-  //   return  this._request(`${this._url}/users/me`, {
-  //     method: "GET",
-  //     headers: this._headers,
-  //   })
-  // }
+  //попробовать как работает
+  _request(url, options) {
+    return fetch(url, options).then(this._checkStatusRequest)
+  }
 
   getUserInfo() {
-    return fetch(`${this._url}/users/me`, {
+    return  this._request(`${this._url}/users/me`, {
       method: "GET",
       headers: this._headers,
-    }).then((res) => this._checkStatusRequest(res));
+    })
   }
+
+  // getUserInfo() {
+  //   return fetch(`${this._url}/users/me`, {
+  //     method: "GET",
+  //     headers: this._headers,
+  //   }).then((res) => this._checkStatusRequest(res));
+  // }
 
   editUserInfo({ name, about }) {
     return fetch(`${this._url}/users/me`, {
