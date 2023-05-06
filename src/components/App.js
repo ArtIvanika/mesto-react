@@ -90,6 +90,43 @@ function App() {
     }
   }, [isOpen]);
 
+
+  function handleUpdateUser(name, about) {
+    setIsLoading(true)
+    api
+      .editUserInfo(name, about)
+      .then((res) => {
+        setCurrentUser(res);
+        closeAllPopups();
+      })
+      .catch((err) => console.log(err))
+      .finally(() => {setIsLoading(false)})
+  }
+
+  function handleUpdateAvatar(avatar) {
+    setIsLoading(true)
+    api
+      .editUserAvatar(avatar)
+      .then((res) => {
+        setCurrentUser(res);
+        closeAllPopups();
+      })
+      .catch((err) => console.log(err))
+      .finally(() => {setIsLoading(false)})
+  }
+
+  function handleAddPlaceSubmit(name, link) {
+    setIsLoading(true)
+    api
+      .addNewCard(name, link)
+      .then((newCard) => {
+        setCards([newCard, ...cards]);
+        closeAllPopups();
+      })
+      .catch((err) => console.log(err))
+      .finally(() => {setIsLoading(false)})
+  }
+
   function handleCardLike(card) {
     // Снова проверяем, есть ли уже лайк на этой карточке
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
@@ -127,42 +164,6 @@ function App() {
         //setCards(newCards);
       })
       .catch((err) => console.log(err));
-  }
-
-  function handleUpdateUser(name, about) {
-    setIsLoading(true)
-    api
-      .editUserInfo(name, about)
-      .then(({ name, about, avatar, _id }) => {
-        setCurrentUser({ name, about, avatar, id: _id });
-        closeAllPopups();
-      })
-      .catch((err) => console.log(err))
-      .finally(() => {setIsLoading(false)})
-  }
-
-  function handleUpdateAvatar(avatar) {
-    setIsLoading(true)
-    api
-      .editUserAvatar(avatar)
-      .then(({ name, about, avatar, _id }) => {
-        setCurrentUser({ name, about, avatar, id: _id });
-        closeAllPopups();
-      })
-      .catch((err) => console.log(err))
-      .finally(() => {setIsLoading(false)})
-  }
-
-  function handleAddPlaceSubmit(name, link) {
-    setIsLoading(true)
-    api
-      .addNewCard(name, link)
-      .then((newCard) => {
-        setCards([newCard, ...cards]);
-        closeAllPopups();
-      })
-      .catch((err) => console.log(err))
-      .finally(() => {setIsLoading(false)})
   }
 
   return (
